@@ -1,0 +1,4 @@
+sbatch --nodes=2 --gres=gpu:A100:8 --reservation=safe run_deepspeed.sh 
+ps -aux | grep cristian
+killall -u cristian 
+gpustat -u --watch 

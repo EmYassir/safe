@@ -13,6 +13,7 @@ from loguru import logger
 from transformers import AutoConfig, AutoTokenizer, TrainingArguments, set_seed
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils.logging import log_levels as LOG_LEVELS
+from transformers.utils import ENV_VARS_TRUE_VALUES
 
 import safe
 from safe.tokenizer import SAFETokenizer
@@ -185,7 +186,7 @@ def train(model_args, data_args, training_args):
         training_args.report_to = ["wandb"]
     if model_args.wandb_watch:
         os.environ["WANDB_WATCH"] = model_args.wandb_watch
-        if model_args.wandb_watch == "all":
+        if model_args.wandb_watch == "all" and (os.environ["WANDB_LOG_MODEL"].upper() in ENV_VARS_TRUE_VALUES.union({"TRUE"})):
             os.environ["WANDB_LOG_MODEL"] = "end"
 
     training_args.run_name = wandb_run_name
